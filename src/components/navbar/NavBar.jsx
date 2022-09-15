@@ -45,22 +45,13 @@ const NavBar = () => {
         </CHeaderBrand>
         
         <CHeaderNav className="d-md-flex m-auto">
-          <CNavItem>
-            <span className="p-input-icon-left">
-              <i className="pi pi-search" />
-              <InputText className="input-navbar-search" value={value3} onChange={(e) => setValue3(e.target.value)} placeholder="Rechercher..." />
-            </span>
-          </CNavItem>
+      
          
         </CHeaderNav>
 
         <CHeaderNav>
 
-          <CNavItem>
-            <CNavLink href="#">
-              <i className="pi pi-bell mr-4 p-text-secondary p-overlay-badge" style={{ fontSize: '1rem' }}><Badge  style={{ fontSize: '0.8rem',size:"1rem" }} value="0" ></Badge></i>
-            </CNavLink>
-          </CNavItem>
+       
          
         </CHeaderNav>
         <CHeaderNav className="ms-3">

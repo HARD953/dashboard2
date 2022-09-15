@@ -17,7 +17,7 @@ import {
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
-import avatar8 from './../../assets/images/avatars/8.jpg'
+import avatar8 from './../../assets/images/avatars/im8.jpg'
 
 const NavbarDropdown = () => {
   return (
@@ -31,13 +31,7 @@ const NavbarDropdown = () => {
           <CIcon icon={cilUser} className="me-2" />
           Mon compte
         </CDropdownItem>
-        <CDropdownItem href="#">
-          <CIcon icon={cilBell} className="me-2" />
-          Notifications
-          <CBadge color="info" className="ms-2">
-            0
-          </CBadge>
-        </CDropdownItem>
+    
         <CDropdownItem href="#">
           <CIcon icon={cilSettings} className="me-2" />
           Paramètres

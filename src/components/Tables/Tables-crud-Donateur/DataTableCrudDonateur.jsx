@@ -283,6 +283,20 @@ const DataTableCrudDonateur = (props) => {
         );
     }
 
+    const header = (
+        <div className="table-header">
+            <h4 className="mx-0 my-1 "> {props.acteursTitle} <span className='p-badge p-badge-info'>{products== null ? "0": products.length}</span></h4>
+        
+            <span className="p-input-icon-left">
+                <i className="pi pi-search" />
+                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Rechercher..." />
+            </span>
+            <Button  onClick={exportCSV} className="px-3 p-button-sm p-button-rounded p-button-outlined p-button-raised p-button-help me-5" aria-label="Plus">
+                        <i className="pi pi-upload px-2"></i>
+                        <span className="px-5">Exporter</span>
+            </Button>
+        </div>
+    );
 
 
     const productDialogFooter = (
@@ -307,24 +321,23 @@ const DataTableCrudDonateur = (props) => {
        
 
     return (
-        <div className="datatable-crud-demo mt-5">
+        <div className="datatable-crud-demo mt-1">
            <Toast ref={toast} />
-                <Toolbar className="mb-4 bg-white border-0" left={leftToolbarTemplate}  right={rightToolbarTemplate}></Toolbar>
-            <div className="data-table-container">
+                 <div className="data-table-container">
 
                 <DataTable ref={dt} value={products} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
                     dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                     paginatorTemplate="lastPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     currentPageReportTemplate="Afficher de {first} à {last} de {totalRecords} Acteurs"
-                    globalFilter={globalFilter}  responsiveLayout="scroll">
+                    globalFilter={globalFilter} header={header} responsiveLayout="scroll">
                     <Column selectionMode="multiple" headerStyle={{ width: '2rem' }} exportable={false}></Column>
                     
-                    <Column field="email" header="Email" body={emailBodyTemplate}   style={{ minWidth: '5rem' }}></Column>
-                    <Column field="user_name" header="Nom d'utilisateur" body={userBodyTemplate}   style={{ minWidth: '16rem' }}></Column>
-                    <Column field="last_name" header="Nom " body={nomBodyTemplate}   style={{ minWidth: '16rem' }}></Column>
+                    <Column sortable field="email" header="Email" body={emailBodyTemplate}   style={{ minWidth: '5rem' }}></Column>
+                    <Column sortable field="user_name" header="Nom d'utilisateur" body={userBodyTemplate}   style={{ minWidth: '16rem' }}></Column>
+                    <Column sortable field="last_name" header="Nom " body={nomBodyTemplate}   style={{ minWidth: '16rem' }}></Column>
                     
-                    <Column field="numeo" header="Numero Telephone" body={numeroBodyTemplate}  style={{ minWidth: '10rem' }}></Column>
-                    <Column field="organisations" header="Organisation" body={orgBodyTemplate}  style={{ minWidth: '15rem' }}></Column>
+                    <Column sortable field="numeo" header="Numero Telephone" body={numeroBodyTemplate}  style={{ minWidth: '10rem' }}></Column>
+                    <Column sortable field="organisations" header="Organisation" body={orgBodyTemplate}  style={{ minWidth: '15rem' }}></Column>
                    
                     <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '1rem' }}></Column>
                 </DataTable>

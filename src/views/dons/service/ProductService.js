@@ -1,21 +1,27 @@
 
+
+
+    import axiosIntance from '../../../api/axiosInstance'
+    
+    const userItem = 'tokendashlanfi';
+    const tokenUser = localStorage.getItem(userItem)
+
+
+  
 export class ProductService {
 
 
     getSuperAdmins() {
-        return fetch('https://apivulnerable.herokuapp.com/alsuperadmin/').then(res => res.json()).then(d => d);
+        return axiosIntance.get('superadmin/').then((res)=>res.data.data);
     }
     getAdmins() {
-        return fetch('https://apivulnerable.herokuapp.com/aladmin/').then(res => res.json()).then(d => d);
-    }
-    getAgentsParAdmins() {
-        return fetch('https://apivulnerable.herokuapp.com/alagent/').then(res => res.json()).then(d => d);
+        return axiosIntance.get('admins/').then((res)=>res.data.data);
     }
     getAgents() {
-        return fetch('https://apivulnerable.herokuapp.com/allagent/').then(res => res.json()).then(d => d);
+        return axiosIntance.get('agent/').then((res)=>res.data.data);
     }
     getRecPers() {
-        return fetch('https://apivulnerable.herokuapp.com/vulnerablegs/').then(res => res.json()).then(d => d.results);
+        return axiosIntance.get('vulnerablegs/').then((res)=>res.data.data);
     }
     getVulVie() {
         return fetch('https://apivulnerable.herokuapp.com/vulnerablecon/').then(res => res.json()).then(d => d.results);
@@ -42,7 +48,7 @@ export class ProductService {
         return fetch('https://apivulnerable.herokuapp.com/individus/').then(res => res.json()).then(d => d.data);
     }
     getMenages() {
-        return fetch('https://apivulnerable.herokuapp.com/vulnerablegs/').then(res => res.json()).then(d => d.data);
+        return axiosIntance.get('menage/').then((res)=>res.data.data);
     }
     getConditionsVie() {
         return fetch('https://apivulnerable.herokuapp.com/vulnerablecon/').then(res => res.json()).then(d => d.data);
@@ -56,7 +62,41 @@ export class ProductService {
     getNiveauEtude() {
         return fetch('https://apivulnerable.herokuapp.com/vulnerableetud/').then(res => res.json()).then(d => d.data);
     }
+    getAdminDetails(emailAdmin) {
 
+  
+
+        var requestOptions = {
+            method: 'GET',
+            headers: tokenUser ? {'Authorization': 'Bearer '+tokenUser}:{},
+      
+            redirect: 'follow'
+          };
+
+        return  fetch("https://apivulnerable.herokuapp.com/infoadmin/"+emailAdmin+"/", requestOptions)
+          .then(response => response.json())
+          .then(result => (result.chefs))
+          .catch(error => console.log('error', error));
+    }
+
+    getAgentDetails(emailAgent) {
+
+  
+
+        var requestOptions = {
+            method: 'GET',
+            headers: tokenUser ? {'Authorization': 'Bearer '+tokenUser}:{},
+      
+            redirect: 'follow'
+          };
+
+        return  fetch("https://apivulnerable.herokuapp.com/infoagent/"+emailAgent+"/", requestOptions)
+          .then(response => response.json())
+          .then(result => (result))
+          .catch(error => console.log('error', error));
+    }
+
+  
 
 
 }

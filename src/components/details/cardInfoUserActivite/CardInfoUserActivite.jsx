@@ -36,7 +36,7 @@ const UserCardActivite=(props)=>{
 }
 
 
-const CardInfoUserActivite = () => {
+const CardInfoUserActivite = (props) => {
 
   return (
      <div className="container-fluid">
@@ -48,7 +48,7 @@ const CardInfoUserActivite = () => {
                 <UserCardActivite titre="Etat de connexion" info="En ligne" />
             </CRow>
             <CRow>
-                <UserCardActivite titre="Date Derniere connexion" info="10/05/2020 à 20h50" />
+                <UserCardActivite titre="Date Derniere connexion" info={props.infoAgent.data.agent[0].last_login} />
             </CRow>
             <CRow>
                 <UserCardActivite titre="Dernier mofication du compte" info="10/01/2022" />

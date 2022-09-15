@@ -292,27 +292,7 @@ const onCityChangeSuperU = (e) => {
         )
     }
 
-    const rightToolbarTemplate = () => {
-        return (
-            <React.Fragment>
-                <div  className="d-flex" style={{justifyContent:"space-between",justifyItems:"center"}} >
-                    <Button  onClick={exportCSV} className="px-3 p-button-sm p-button-rounded p-button-outlined p-button-raised p-button-help me-5" aria-label="Plus">
-                        <i className="pi pi-upload px-2"></i>
-                        <span className="px-5">Exporter</span>
-                    </Button>
-                    <div className=" font-weight-bold" style={{fontWeight:"bold"}} >
-                        <p>
-                            <span className="me-3" >
-                            {products ==null ?'0':products.length }
-                            </span>
-                            {props.acteursTitle}
-                        </p>
-                    </div>
-                </div>
-
-            </React.Fragment>
-        )
-    }
+ 
 
     const imageBodyTemplate = (rowData) => {
         return 
@@ -386,7 +366,20 @@ const onCityChangeSuperU = (e) => {
         );
     }
 
-
+    const header = (
+        <div className="table-header">
+            <h4 className="mx-0 my-1 "> {props.acteursTitle} <span className='p-badge p-badge-info'>{products== null ? "0": products.length}</span></h4>
+        
+            <span className="p-input-icon-left">
+                <i className="pi pi-search" />
+                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Rechercher..." />
+            </span>
+            <Button  onClick={exportCSV} className="px-3 p-button-sm p-button-rounded p-button-outlined p-button-raised p-button-help me-5" aria-label="Plus">
+                        <i className="pi pi-upload px-2"></i>
+                        <span className="px-5">Exporter</span>
+            </Button>
+        </div>
+    );
 
     const productDialogFooter = (
         <React.Fragment>
@@ -410,28 +403,28 @@ const onCityChangeSuperU = (e) => {
        
 
     return (
-        <div className="datatable-crud-demo mt-5">
+        <div className="datatable-crud-demo mt-1">
            <Toast ref={toast} />
-                <Toolbar className="mb-4 bg-white border-0" left={leftToolbarTemplate}  right={rightToolbarTemplate}></Toolbar>
+              
             <div className="data-table-container">
 
                 <DataTable ref={dt} value={products} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
                     dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     currentPageReportTemplate="Afficher de {first} à {last} de {totalRecords} Acteurs"
-                    globalFilter={globalFilter}  responsiveLayout="scroll">
+                    globalFilter={globalFilter} header={header}  responsiveLayout="scroll">
                     <Column selectionMode="multiple" headerStyle={{ width: '2rem' }} exportable={false}></Column>
-                    <Column field="email" header="Email" body={emailBodyTemplate}   style={{ minWidth: '5rem' }}></Column>
-                    <Column field="user_name" header="Nom d'utilisateur" body={user_nameBodyTemplate}   style={{ minWidth: '16rem' }}></Column>
-                    <Column field="commune" header="Commune" body={communeBodyTemplate}  style={{ minWidth: '16rem' }}></Column>
-                    <Column field="first_name" header="Nom" body={first_nameTemplate}  style={{ minWidth: '15rem' }}></Column>
-                    <Column field="adresse" header="Adresse" body={adresseTemplate}  style={{ minWidth: '15rem' }}></Column>
+                    <Column sortable field="email" header="Email" body={emailBodyTemplate}   style={{ minWidth: '5rem' }}></Column>
+                    <Column sortable field="user_name" header="Nom d'utilisateur" body={user_nameBodyTemplate}   style={{ minWidth: '16rem' }}></Column>
+                    <Column sortable field="commune" header="Commune" body={communeBodyTemplate}  style={{ minWidth: '16rem' }}></Column>
+                    <Column sortable field="first_name" header="Nom" body={first_nameTemplate}  style={{ minWidth: '15rem' }}></Column>
+                    <Column sortable field="adresse" header="Adresse" body={adresseTemplate}  style={{ minWidth: '15rem' }}></Column>
                 
-                    <Column field="password" header="Mot de Passe" body={passwordTemplate}  style={{ minWidth: '10rem' }}></Column>
-                    <Column field="about_me" header="À propos de moi" body={about_meTemplate}  style={{ minWidth: '15rem' }}></Column>
-                    <Column field="is_active" header="Actif " body={is_activeTemplate}  style={{ minWidth: '10rem' }}></Column>
-                    <Column field="is_staff" header="Personnel " body={is_staff}  style={{ minWidth: '15rem' }}></Column>
-                    <Column field="is_superuser" header="Super-utilisateur" body={is_superuserTemplate}  style={{ minWidth: '10rem' }}></Column>
+                    <Column sortable field="password" header="Mot de Passe" body={passwordTemplate}  style={{ minWidth: '10rem' }}></Column>
+                    <Column sortable field="about_me" header="À propos de moi" body={about_meTemplate}  style={{ minWidth: '15rem' }}></Column>
+                    <Column sortable field="is_active" header="Actif " body={is_activeTemplate}  style={{ minWidth: '10rem' }}></Column>
+                    <Column sortable field="is_staff" header="Personnel " body={is_staff}  style={{ minWidth: '15rem' }}></Column>
+                    <Column sortable field="is_superuser" header="Super-utilisateur" body={is_superuserTemplate}  style={{ minWidth: '10rem' }}></Column>
                     
                     <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '1rem' }}></Column>
                 </DataTable>

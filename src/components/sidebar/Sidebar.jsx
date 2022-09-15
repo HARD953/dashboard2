@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+
 import { useSelector, useDispatch } from 'react-redux'
 
 import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler,CImage,
@@ -15,10 +16,13 @@ import 'simplebar/dist/simplebar.min.css'
 
 // sidebar nav config
 import navigation from './_nav'
+import { useEffect } from 'react'
+import axiosIntance from '../../api/axiosInstance'
 
 import './Sidebar.css'
 
-import avatar8 from './../../assets/images/avatars/8.jpg'
+import avatar8 from './../../assets/images/avatars/im8.jpg'
+
 
 
 
@@ -26,6 +30,25 @@ const Sidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  
+
+  const [userAdminData,setUserAdminData] = useState([])
+  const userData = 'userDatalanfia';
+
+  useEffect(()=>{
+    axiosIntance.get('detailadimn/')
+    .then((res)=>{
+      setUserAdminData(res.data.data[0])
+      console.log(res.data.data[0])
+
+     
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  },[])
+
+
 
   return (
     <CSidebar
@@ -50,10 +73,10 @@ const Sidebar = () => {
           <div className='col-10 text-center'>
             
             <div className=''>
-                <h4>Traore Mariam</h4>
+                <h4>{userAdminData.user_name}</h4>
             </div>
             <div className=''>
-                <p>Administrateur</p>
+                <p>{userAdminData.is_superuser==true ? 'Super-administrateur':'Administrateur'}</p>
             </div>
           </div>
         </div>

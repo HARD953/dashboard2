@@ -97,8 +97,8 @@ const _nav = [
           },
           {
             component: CNavItem,
-            name: 'Chômage',
-            to:  `${route_cible}/chomage`,
+            name: 'Sans emploi',
+            to:  `${route_cible}/sansemploi`,
           },
         
         ],

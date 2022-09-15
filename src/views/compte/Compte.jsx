@@ -9,6 +9,8 @@ import {
 import CardInfoUserActivite from '../../components/details/cardInfoUserActivite/CardInfoUserActivite';
 import './Compte.css'
 
+
+
 import ProfilCard from '../../components/ProfilCard/ProfilCard';
 const styles = {
   fontFamily: "sans-serif",

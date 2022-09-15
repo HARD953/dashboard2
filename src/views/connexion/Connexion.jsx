@@ -4,17 +4,21 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
 import { classNames } from 'primereact/utils';
+import axios from 'axios'; 
 
 
 import "./Connexion.css";
+import { useNavigate } from 'react-router-dom';
+import axiosIntance from '../../api/axiosInstance';
 
-
+const userItem = 'tokendashlanfi';
+const userEmail = 'userEmail';
 
 const Connexion = (props,navigate) => {
 
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState({});
-  
+    const navigation = useNavigate()
 
 
     const formik = useFormik({
@@ -40,11 +44,58 @@ const Connexion = (props,navigate) => {
 
             return errors;
         },
-        onSubmit: (data) => {
-            setFormData(data);
+        onSubmit: async (dataN) => {
+            setFormData(dataN);
+            console.log(dataN)
+            
+            axiosIntance.post('token/',dataN)
+              .then(function (response) {
+                console.log(response.data?.access);
+                localStorage.setItem(userItem,response.data?.access)
+                localStorage.setItem(userEmail,dataN.email)
+                navigation('/dashboard',{replace:true})
+              
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+
+            // var data = JSON.stringify({
+            //     "email": "junior",
+            //     "password": "123456"
+            //   });
+              
+            //   var config = {
+            //     method: 'post',
+            //     url: 'https://apidons.herokuapp.com/token/',
+            //     headers: { 
+            //       'Content-Type': 'application/json'
+            //     },
+          
+            //     data : data
+            //   };
+              
+            //   axios.post('https://apidons.herokuapp.com/token/',{
+            //     "email": "junior",
+            //     "password": "123456"
+            //   })
+            //   .then(function (response) {
+            //     console.log(JSON.stringify(response.data));
+            //   })
+            //   .catch(function (error) {
+            //     console.log(error);
+            //   });
+              
+              
+
+
+
+            
             setShowMessage(true);
 
-            window.location.replace('/dashboard');
+           
+
+           // window.location.replace('/dashboard');
 
             formik.resetForm();
 

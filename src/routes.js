@@ -1,5 +1,7 @@
 import React from 'react'
 
+const detailsadmin = React.lazy(() => import('./views/details/detailsActeurs/DetailsActeursN'))
+
 
 //Accueil
 const Accueil = React.lazy(() => import('./views/accueil/Accueil'))
@@ -33,7 +35,7 @@ const Criteres = React.lazy(() => import('./views/criteres/Criteres'))
 const Statistiques = React.lazy(() => import('./views/statistiques/Statistiques'))
 
 //Details
-const DetailsActeurs = React.lazy(() => import('./views/details/detailsActeurs/DetailsActeurs'))
+const DetailsActeursAgent = React.lazy(() => import('./views/details/detailsActeurs/DetailsActeursAgent'))
 const DetailsCibles = React.lazy(() => import('./views/details/detailsCibles/DetailsCibles'))
 const DetailsDons = React.lazy(() => import('./views/details/detailsDons/DetailsDons'))
 
@@ -62,7 +64,7 @@ const routes = [
     { path: `/${route_principale}/cibles/menages`, name: 'Menages', element: Menages },
 
     //Vulnerables
-    { path: `/${route_principale}/cibles/chomage`, name: 'Chom', element: Chom },
+    { path: `/${route_principale}/cibles/sansemploi`, name: 'Chom', element: Chom },
     { path: `/${route_principale}/cibles/conditionsvie`, name: 'ConditionsVie', element: ConditionsVie },
     { path: `/${route_principale}/cibles/conditionsphys`, name: 'ConditionsPhys', element: ConditionsPhys },
     { path: `/${route_principale}/cibles/niveauetude`, name: 'NiveauEtude', element: NiveauEtude },
@@ -83,7 +85,8 @@ const routes = [
     { path: `/${route_principale}/statistiques`, name: 'Statistiques', element: Statistiques },
     
     //Details
-    { path: `/${route_principale}/details/acteurs`, name: 'Acteurs Details', element: DetailsActeurs },
+    { path: `/${route_principale}/details/acteuragent`, name: 'Agent Details', element: DetailsActeursAgent },
+    { path: `/${route_principale}/details/acteursadmin`, name: 'Admin Details', element: detailsadmin },
     { path: `/${route_principale}/details/cibles`, name: 'Cibles Details', element: DetailsCibles },
     { path: `/${route_principale}/details/dons`, name: 'Dons Details', element: DetailsDons },
 

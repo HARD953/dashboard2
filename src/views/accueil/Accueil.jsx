@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   CCol,
   CRow,
@@ -12,10 +12,92 @@ import {cilHome} from '@coreui/icons'
 import CardChartCicle from '../../components/home/card-chart-circle/CardChartCicle'
 import CardChartLine from '../../components/home/card-chart-line/CardChartLine'
 import CardChartBar from '../../components/home/card-chart-bar/CardChartBar'
+import { useEffect } from 'react'
+import axiosIntance from '../../api/axiosInstance'
 
 
 
 const Accueil = () => {
+
+  const [userAdminData,setUserAdminData] = useState([])
+
+  const [menage,setMenage] = useState([])
+  const [individuel,setIndividuel] = useState([])
+
+  const userData = 'userDatalanfia';
+
+
+  //Administrateurs
+
+  useEffect(()=>{
+    axiosIntance.get('detailadimn/')
+    .then((res)=>{
+      setUserAdminData(res.data.data[0])
+
+      
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  },[])
+
+
+//Vulnérabilités Stat Menage
+
+
+  useEffect(()=>{
+    axiosIntance.get('staticirclem/')
+    .then((res)=>{
+      setMenage(res.data.menage)
+
+      
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  },[])
+
+  //Vulnérabilités Stat Individuel
+
+
+  useEffect(()=>{
+    axiosIntance.get('staticirclei/')
+    .then((res)=>{
+      
+      setIndividuel(res.data.individu)
+
+      
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  },[])
+
+  //Stats
+
+
+  useEffect(()=>{
+    axiosIntance.get('statibarm/')
+    .then((res)=>{
+      
+      console.log(res)
+
+      
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  },[])
+
+  
+
+
+
+
+
+
+  
+
   return (
     <CContainer >
       <div className="">
@@ -27,11 +109,11 @@ const Accueil = () => {
       <CRow>
         
         <CCol  className='mt-3 mt-md-0' md={6}>
-          <CardChartCicle/>
+          <CardChartCicle libelle ="Individus" individuel={individuel} />
         </CCol>
         
         <CCol className='mt-3 mt-md-0'  md={6}>
-          <CardChartCicle/>
+          <CardChartCicle libelle="Ménages" menage={menage}/>
         </CCol>
       
       </CRow>

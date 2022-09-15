@@ -37,17 +37,12 @@ const Objets = () => {
             Objets
           </div>
         </div>
-        <div className="">
-          <span className="p-input-icon-left">
-            <i className="pi pi-search" />
-            <InputText className="input-navbar-search" value={value3} onChange={(e) => setValue3(e.target.value)}placeholder="Rechercher..." />
-            </span>
-        </div>
+        
       </div>
       <CRow>
       
         <CCol xs={12}>
-          <DataTableCrudNature acteursTitle="Dons" detailUrl="/dashboard/details/dons"/>
+          <DataTableCrudNature acteursTitle="Objets" detailUrl="/dashboard/details/dons"/>
         </CCol>
       
       </CRow>

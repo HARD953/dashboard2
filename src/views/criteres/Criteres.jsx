@@ -51,7 +51,7 @@ const dt = useRef(null);
 const productService = new ProductService();
 
 useEffect(() => {
-    productService.getProducts().then(data => setProducts(data));
+    productService.getAdmins().then(data => setProducts(data));
 }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 const formatCurrency = (value) => {

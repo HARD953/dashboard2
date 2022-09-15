@@ -36,17 +36,12 @@ const Administrateurs = () => {
             Administrateurs
           </div>
         </div>
-        <div className="">
-          <span className="p-input-icon-left">
-            <i className="pi pi-search" />
-            <InputText className="input-navbar-search" value={value3} onChange={(e) => setValue3(e.target.value)}placeholder="Rechercher..." />
-            </span>
-        </div>
+ 
       </div>
       <CRow>
       
         <CCol xs={12}>
-          <DataTableCrudAdmin acteursTitle="Administrateurs" detailUrl="/dashboard/details/acteurs" />
+          <DataTableCrudAdmin acteursTitle="Administrateurs" detailUrl="/dashboard/details/acteursadmin" />
         </CCol>
       
       </CRow>
