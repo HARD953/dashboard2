@@ -18,7 +18,6 @@ const Chom = React.lazy(() => import('./views/cibles/Chom/Chom'))
 const Menages = React.lazy(() => import('./views/cibles/menages/Menages'))
 const NiveauEtude = React.lazy(() => import('./views/cibles/NiveauEtude/NiveauEtude'))
 const ConditionsVie = React.lazy(() => import('./views/cibles/ConditionsVie/ConditionsVie'))
-const ConditionsPhys = React.lazy(() => import('./views/cibles/ConditionsPhys/ConditionsPhys'))
 
 
 //Dons
