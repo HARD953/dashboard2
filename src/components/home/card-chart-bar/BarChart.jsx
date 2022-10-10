@@ -1,19 +1,44 @@
 
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Chart } from 'primereact/chart';
 
-const BarChart = () => {
-    const [basicData] = useState({
-        labels: ['Abidjan', 'Man', 'Soubre', 'Bouaké', 'Issia', 'San-pedron', 'Yakro'],
+const BarChart = (props) => {
+
+    let allVille =[]
+    let allNombre = []
+
+   
+    const [basicData,setBasicData] = useState({
+        labels: props.label,
         datasets: [
             {
                 label: 'Villes avec nombre de personnes vulnerables élevés',
                 backgroundColor: '#42A5F5',
-                data: [65, 59, 80, 81, 56, 55, 40]
+                data: props.valeur
             },
            
         ]
     });
+
+    var i =0
+
+    useEffect(()=>{
+        
+
+          setBasicData({
+            labels: props.label,
+            datasets: [
+                {
+                    label: 'Villes avec nombre de personnes vulnerables élevés',
+                    backgroundColor: '#42A5F5',
+                    data: props.valeur
+                },
+               
+            ]
+      
+        })
+    
+      },[props.label,props.valeur])
 
 
         let basicOptions = {

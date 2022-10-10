@@ -41,6 +41,12 @@ const Sidebar = () => {
       setUserAdminData(res.data.data[0])
       console.log(res.data.data[0])
 
+      window.localStorage.setItem("profile",res.data.data[0].profile_image)
+   
+
+  
+  
+
      
     })
     .catch((error)=>{
@@ -48,6 +54,8 @@ const Sidebar = () => {
     })
   },[])
 
+
+ 
 
 
   return (
@@ -68,7 +76,7 @@ const Sidebar = () => {
       <CSidebarBrand className="info-user-brand" to="/dashboard">
         <div className='row'>
           <div className='col-2 m-auto'>
-            <CAvatar src={avatar8} size="md" />
+            <CAvatar src={userAdminData.profile_image} size="md" />
           </div>
           <div className='col-10 text-center'>
             

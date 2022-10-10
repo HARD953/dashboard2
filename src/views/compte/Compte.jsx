@@ -5,13 +5,12 @@ import {
   CContainer,
 
 } from '@coreui/react'
-
-import CardInfoUserActivite from '../../components/details/cardInfoUserActivite/CardInfoUserActivite';
 import './Compte.css'
 
 
 
 import ProfilCard from '../../components/ProfilCard/ProfilCard';
+import CardInfoUserActiviteCompte from '../../components/details/cardInfoUserActivite/CardInfoUserActiviteCompte';
 const styles = {
   fontFamily: "sans-serif",
  
@@ -39,7 +38,7 @@ const Compte = () => {
         
           <div className=" p-2 border-top border-bottom">
             
-            <CardInfoUserActivite />
+            <CardInfoUserActiviteCompte />
 
           </div>
 

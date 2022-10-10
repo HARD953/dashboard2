@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import {
   CCol,
   CRow,
@@ -8,22 +8,35 @@ import {
 } from '@coreui/react'
 
 
-import CIcon from '@coreui/icons-react'
-import {cilPeople} from '@coreui/icons'
-
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-
 import './CardUsers.css'
 import { InputSwitch } from 'primereact/inputswitch';
 
+import { ProductService } from '../../../views/dons/service/ProductService';
 
+
+
+
+const productService = new ProductService();
 
 const UserCardInfos=(props)=>{
 
-    const [checked1, setChecked1] = useState(props?.infoAdmin.infoAdmin.admin[0].is_active);
+    const [valu,setValu]=useState([])
 
-    const [checked2, setChecked2] = useState(props?.infoAdmin.infoAdmin.admin[0].is_superuser);
+    useEffect(() => {
+
+    
+        productService.getAdminDetails(props.infoAdmin.infoAdmin).then(data => setValu(data));
+       
+    }, []); 
+
+  
+ 
+
+    const [checked1, setChecked1] = useState( valu.admin?.[0].is_active );
+
+    const [checked2, setChecked2] = useState(valu.admin?.[0].is_superuser);
+    
+   
 
 
     const AdminCheck1 = (val)=>
@@ -31,7 +44,7 @@ const UserCardInfos=(props)=>{
             setChecked1(val)
             console.log(val)
         }
-     
+
 
     const AdminCheck2 = (val)=>
         {
@@ -40,6 +53,68 @@ const UserCardInfos=(props)=>{
             console.log(val)
         }
      
+        function checkName()
+        {
+            if(typeof valu.admin != 'undifined'){
+
+                return(valu.admin?.[0].first_name)
+               
+            }
+            else {
+                return ''
+            }
+        }
+
+        function checkuserName()
+        {
+            if(typeof valu.admin != 'undifined'){
+
+
+                return(valu.admin?.[0].user_name)
+
+                
+               
+            }
+            else {
+                return ''
+            }
+        }
+        function checkEmail()
+        {
+            if(typeof valu.admin != 'undifined'){
+
+                
+                return(valu.admin?.[0].email)
+               
+            }
+            else {
+                return ''
+            }
+        }
+        function checkCommune()
+        {
+            if(typeof valu.admin != 'undifined'){
+
+                
+                return(valu.admin?.[0].commune)
+               
+            }
+            else {
+                return ''
+            }
+        }
+        function checkAdresse()
+        {
+            if(typeof valu.admin != 'undifined'){
+
+                
+                return(valu.admin?.[0].adresse)
+               
+            }
+            else {
+                return ''
+            }
+        }
 
     return(
         <CRow>
@@ -50,7 +125,7 @@ const UserCardInfos=(props)=>{
             </CCol>
             <CCol xs={12}  md={6} className="userCardInfos-info-container" >
                 <p className="userCardInfos-info" >
-                {props?.infoAdmin.infoAdmin.admin[0].user_name}
+                {valu.admin?.[0].user_name }
                 </p>
             </CCol>
             <CCol xs={12} md={6} >
@@ -60,8 +135,7 @@ const UserCardInfos=(props)=>{
             </CCol>
             <CCol xs={12}  md={6} className="userCardInfos-info-container" >
                 <p className="userCardInfos-info" >
-                {props?.infoAdmin.infoAdmin.admin[0].first_name}
-                </p>
+                {checkName() }      </p>
             </CCol>
             <CCol xs={12} md={6} >
                 <p className="userCardInfos-titre">
@@ -70,8 +144,7 @@ const UserCardInfos=(props)=>{
             </CCol>
             <CCol xs={12}  md={6} className="userCardInfos-info-container" >
                 <p className="userCardInfos-info" >
-                {props?.infoAdmin.infoAdmin.admin[0].email}
-                </p>
+                {checkEmail() }    </p>
             </CCol>
             <CCol xs={12} md={6} >
                 <p className="userCardInfos-titre">
@@ -80,8 +153,7 @@ const UserCardInfos=(props)=>{
             </CCol>
             <CCol xs={12}  md={6} className="userCardInfos-info-container" >
                 <p className="userCardInfos-info" >
-                {props?.infoAdmin.infoAdmin.admin[0].commune}
-                </p>
+                {checkCommune() }  </p>
             </CCol>
             <CCol xs={12} md={6} >
                 <p className="userCardInfos-titre">
@@ -90,8 +162,7 @@ const UserCardInfos=(props)=>{
             </CCol>
             <CCol xs={12}  md={6} className="userCardInfos-info-container" >
                 <p className="userCardInfos-info" >
-                {props?.infoAdmin.infoAdmin.admin[0].adresse}
-                </p>
+                {checkAdresse() } </p>
             </CCol>
             <CCol xs={12} md={6} >
                 <p className="userCardInfos-titre">
@@ -123,7 +194,7 @@ const UserCardInfos=(props)=>{
 
 const CardUsers = (props) => {
 
- 
+  
 
   return (
      <div className="container">
@@ -141,5 +212,6 @@ const CardUsers = (props) => {
 
   )
 }
+
 
 export default CardUsers

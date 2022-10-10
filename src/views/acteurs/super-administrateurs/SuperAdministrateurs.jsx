@@ -42,7 +42,7 @@ const SuperAdministrateurs = () => {
       <CRow>
       
         <CCol xs={12}>
-          <DataTableCrud acteursTitle="Super-administrateurs" />
+          <DataTableCrud acteursTitle="Super-administrateurs" detailUrl="/dashboard/details/acteurssa"/>
         </CCol>
       
       </CRow>

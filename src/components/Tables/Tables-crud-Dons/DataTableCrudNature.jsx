@@ -235,7 +235,7 @@ const DataTableCrudNature = (props) => {
         return (rowData.Etat);
     }
     const photoBodyTemplate = (rowData) => {
-        return (rowData.photo);
+        return <img src={rowData.photo} width='100' />
     }
 
     const idBodyTemplate = (rowData) => {

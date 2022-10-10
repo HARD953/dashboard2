@@ -9,15 +9,14 @@ import { Column } from 'primereact/column';
 import { ProductService } from '../../../views/dons/service/ProductService';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-import { FileUpload } from 'primereact/fileupload';
-import { Rating } from 'primereact/rating';
+
 import { Toolbar } from 'primereact/toolbar';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { RadioButton } from 'primereact/radiobutton';
-import { InputNumber } from 'primereact/inputnumber';
+
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import './DataTableCrud.css';
+import { Dropdown } from 'primereact/dropdown';
 
 const userItem = 'tokendashlanfi';
 const tokenUser = localStorage.getItem(userItem)
@@ -50,8 +49,8 @@ const DataTableCrudAdmin = (props) => {
     const dt = useRef(null);
     const productService = new ProductService();
     const [valu,setValu] = useState([])
-
-
+    
+    
     const [cities, setCities] = useState([]);
 
 
@@ -105,6 +104,71 @@ const onCityChangeActive = (e) => {
 
     }, []); 
 
+ 
+
+
+       // Communes Liste Dropdown
+
+       const [communes, setCommunes] = useState([]);
+
+       const [selectedcommune, setselectedcommune] = useState(null);
+  
+
+      
+       var j=0
+       var js=""
+       var tab=[]
+
+       
+
+       useEffect(() => {
+        
+        productService.getAllCommunes().then(data => {
+
+            
+            if(j==0)
+            {
+               
+            for(let i=0;i< data.length;i++ )
+            {
+
+                js={ name: data[i].COMMUNE ,  code: data[i].COMMUNE }
+                
+                tab.push(js)
+                
+            }
+          
+
+            setCommunes(tab)
+
+            
+            tab=[]
+            js=""
+
+           
+            
+            j=j+1
+        }
+        });
+
+        }, []); 
+
+
+        const onCityChangecommune = (e,name) => {
+        
+     
+            setselectedcommune(e.value);
+    
+            const val = e.value.code || '';
+            let _product = {...product};
+            _product[`${name}`] = val;
+    
+            setProduct(_product);
+         
+        }
+        // Communes Liste Dropdown
+
+
 
 
 
@@ -137,40 +201,69 @@ const onCityChangeActive = (e) => {
         if (product.email.trim() && product.first_name.trim()&& product.adresse.trim()&& product.commune.trim()&& product.user_name.trim()&& product.password.trim()) {
             let _products = [...products];
             let _product = {...product};
+
             if (product.id) {
                 const index = findIndexById(product.id);
 
                 _products[index] = _product;
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+
+                setProducts(_products);
+
+                var data = _product;
+           
+    
+                var config = {
+                  method: 'put',
+                  url: 'https://apivulnerable.herokuapp.com/adminsc/'+product.id+'/',
+                  headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+tokenUser
+                  },
+                  data : data
+                };
+                
+                axios(config)
+                .then(function (response) {
+                  console.log(JSON.stringify(response));
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+
+                toast.current.show({ severity: 'success', summary: 'Succès', detail: 'Admin. mis à jour', life: 3000 });
             }
             else {
                // _product.id = createId();
                 //_product.image = 'product-placeholder.svg';
                 _products.push(_product);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Administrateur Créé', life: 3000 });
+
+                setProducts(_products);
+
+                var data = _product;
+           
+    
+                var config = {
+                  method: 'post',
+                  url: 'https://apivulnerable.herokuapp.com/admins/',
+                  headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+tokenUser
+                  },
+                  data : data
+                };
+                
+                axios(config)
+                .then(function (response) {
+                  console.log(JSON.stringify(response));
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+
+                toast.current.show({ severity: 'success', summary: 'Succès', detail: 'Administrateur Créé', life: 3000 });
             }
 
-            setProducts(_products);
-
-            var data = _product;
-           console.log(data)
-            var config = {
-              method: 'post',
-              url: 'https://apivulnerable.herokuapp.com/admins/',
-              headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+tokenUser
-              },
-              data : data
-            };
-            
-            axios(config)
-            .then(function (response) {
-              console.log(JSON.stringify(response));
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+  
 
 
             setProductDialog(false);
@@ -181,8 +274,16 @@ const onCityChangeActive = (e) => {
     }
 
     const editProduct = (product) => {
-        setProduct({...product});
+        
+   // var jse=[{ name: product.commune ,  code: product.commune }]
+    
+    
+       
+        
+        setProduct(...product);
         setProductDialog(true);
+        console.log(product)
+        
     }
 
     const confirmDeleteProduct = (product) => {
@@ -195,7 +296,7 @@ const onCityChangeActive = (e) => {
         setProducts(_products);
         setDeleteProductDialog(false);
         setProduct(emptyProduct);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+        toast.current.show({ severity: 'success', summary: 'Succès', detail: 'Product Deleted', life: 3000 });
     }
 
     const findIndexById = (id) => {
@@ -265,7 +366,7 @@ const onCityChangeActive = (e) => {
         setProducts(_products);
         setDeleteProductsDialog(false);
         setSelectedProducts(null);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+        toast.current.show({ severity: 'success', summary: 'Succès', detail: 'Products Deleted', life: 3000 });
     }
 
     const onCategoryChange = (e) => {
@@ -390,13 +491,14 @@ const onCityChangeActive = (e) => {
      
         //Telechargement des informations de l'admin et update 'valu'
 
-        telInfoAdmin(rowData.email)
+     //   telInfoAdmin(rowData.email)
 
         //Fin telechargement
 
         return (
             <React.Fragment>
                 <Button icon="pi pi-eye" className="p-button-rounded p-button-outlined " onClick={() => voirDetailsActeurs(rowData)} />
+                <Button icon="pi pi-pencil" className="p-button-rounded p-button-outlined mr-2" onClick={() => editProduct(rowData)} />
             </React.Fragment>
         );
     }
@@ -482,9 +584,10 @@ const onCityChangeActive = (e) => {
                 </div>
                 <div className="field">
                     <label htmlFor="commune">Commune</label>
-                    <InputText id="commune" value={product.commune} onChange={(e) => onInputChange(e, 'commune')} required  className={classNames({ 'p-invalid': submitted && !product.commune })} />
-                    {submitted && !product.commune && <small className="p-error">Commune is required.</small>}
+                    <Dropdown id="commune"  value={selectedcommune} options={communes} onChange={(e) => onCityChangecommune(e, 'commune')} optionLabel="name" placeholder="commune" className={classNames({ 'p-invalid': submitted && !product.commune })} />
+                  {submitted && !product.commune && <small className="p-error">commune is required.</small>}
                 </div>
+      
                 <div className="field">
                     <label htmlFor="first_name">Nom</label>
                     <InputText id="first_name" value={product.first_name} onChange={(e) => onInputChange(e, 'first_name')} required  className={classNames({ 'p-invalid': submitted && !product.first_name })} />

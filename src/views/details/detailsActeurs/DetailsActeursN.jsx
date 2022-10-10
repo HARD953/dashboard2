@@ -13,7 +13,6 @@ import {cilPeople} from '@coreui/icons'
 
 import './DetailsActeurs.css'
 import CardUsers from '../../../components/details/cardUsers/CardUsers';
-import CardResponsabilite from '../../../components/details/cardResponsabilite/CardResponsabilite';
 import CardInfoUserActivite from '../../../components/details/cardInfoUserActivite/CardInfoUserActivite';
 import { useLocation } from 'react-router-dom';
 import { ProductService } from '../../../views/dons/service/ProductService';
@@ -22,11 +21,21 @@ import { useEffectX } from 'use-effect-x';
 
 const productService = new ProductService();
 
+
+    
+
 const DetailsActeursN = (props) => {
+
+
+  //const [valu,setValu] = useState([])
 
   const location = useLocation()
 
 
+
+  
+
+  
   return ( 
 
     <CContainer>

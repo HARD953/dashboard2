@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CCol,
   CRow,
@@ -12,28 +12,29 @@ import {cilPeople} from '@coreui/icons'
 
 
 import './DetailsActeurs.css'
-import CardUsersAgent from '../../../components/details/cardUsers/CardUsersAgent';
 
 import { useLocation } from 'react-router-dom';
-import { ProductService } from '../../../views/dons/service/ProductService';
+import { ProductService } from '../../dons/service/ProductService';
 
-import CardInfoUserActiviteAgent from '../../../components/details/cardInfoUserActivite/CardInfoUserActiviteAgent'
+import CardUsersSA from '../../../components/details/cardUsers/CardUsersSA'
+import CardInfoUserActiviteSA from '../../../components/details/cardInfoUserActivite/CardInfoUserActiviteSA'
 
 const productService = new ProductService();
 
-
-const DetailsActeursAgent = (props) => {
-
-  const [valu,setValu]=useState([])
-
+const DetailsActeursSA = (props) => {
 
   const location = useLocation()
 
-  useEffect(()=>{
+  const [valu,setValu]=useState([])
 
-    productService.getAgentDetails(location.state.emailAgent).then(data => setValu(data));
-     
-   })
+  useEffect(() => {
+
+    productService.getSADetails(location.state.emailActeur).then(data => setValu(data));
+
+   
+  }, []); 
+
+  
 
 
   return ( 
@@ -47,27 +48,29 @@ const DetailsActeursAgent = (props) => {
           </h2>
           <div className="mb-4 mx-5" >
             <CSpinner color="primary" size="sm" variant="grow"/>
-            Agents/details
+            Super-administrateurs/details
           </div>
         </div>
       </div>
      
       <CRow>
         <CCol xs={12}>
-          <CardUsersAgent infoAgent = {valu}/>
+          <CardUsersSA infoAdmin = {valu}/>
         </CCol>
       </CRow>
-      
-   
-      
+
       <CRow>
-        <CCol xs={12} className="mt-5">
-          <CardInfoUserActiviteAgent infoAgent = {valu}/>
+        <CCol xs={12}>
+          <CardInfoUserActiviteSA infoAdmin = {valu}/>
         </CCol>
       </CRow>
+      
+     
+      
+     
 
     </CContainer>
   )
 }
 
-export default DetailsActeursAgent
+export default DetailsActeursSA

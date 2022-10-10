@@ -7,7 +7,10 @@ import {
   cilGift,
   cilMap,
   cilChart,
-  cilLockLocked
+  cilLockLocked,
+  cilArrowThickLeft,
+  cilArrowThickRight,
+  cilAsterisk
 
 } from '@coreui/icons'
 import { CNavGroup, CNavItem } from '@coreui/react'
@@ -139,7 +142,13 @@ const _nav = [
     component: CNavItem,
     name: 'Critères',
     to:  `${route_principale}/criteres`,
-    icon: <CIcon icon={cilLockLocked} customClassName="nav-icon" />
+    icon: <CIcon icon={cilAsterisk} customClassName="nav-icon" />
+  },
+  {
+    component: CNavItem,
+    name: 'Affectations',
+    to:  `${route_principale}/affectations`,
+    icon: <CIcon icon={cilArrowThickRight} customClassName="nav-icon" />
   },
   {
     component: CNavItem,

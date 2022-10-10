@@ -19,7 +19,7 @@ const ProfilCard = () =>  {
     axiosInstance.get('detailadimn/')
     .then((res)=>{
       setUserAdminData(res.data.data[0])
-      console.log(res.data.data[0])
+
 
      
     })
@@ -38,7 +38,7 @@ const ProfilCard = () =>  {
                 <div className="col-12 md:col-12 text-center">
                     <div className="rounded-circle" >
                       
-                    <Image src={avatar8}  alt="Image" width="200" shape='circle' preview />
+                    <Image src={userAdminData.profile_image}  alt="Image" width="200" shape='circle' preview />
                         <h5>{userAdminData.user_name}</h5>
                     </div>
                 </div>

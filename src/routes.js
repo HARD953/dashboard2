@@ -1,6 +1,6 @@
 import React from 'react'
 
-const detailsadmin = React.lazy(() => import('./views/details/detailsActeurs/DetailsActeursN'))
+const detailsadmin = React.lazy(() => import('./views/details/TestData'))
 
 
 //Accueil
@@ -38,10 +38,15 @@ const Statistiques = React.lazy(() => import('./views/statistiques/Statistiques'
 const DetailsActeursAgent = React.lazy(() => import('./views/details/detailsActeurs/DetailsActeursAgent'))
 const DetailsCibles = React.lazy(() => import('./views/details/detailsCibles/DetailsCibles'))
 const DetailsDons = React.lazy(() => import('./views/details/detailsDons/DetailsDons'))
+const DetailsSA = React.lazy(() => import('./views/details/detailsActeurs/DetailsActeursSA'))
 
 
 //Compte
 const Compte = React.lazy(() => import('./views/compte/Compte'))
+
+
+//Compte
+const Affectations = React.lazy(() => import('./views/affectations/Affectations'))
 
 
 
@@ -78,8 +83,11 @@ const routes = [
     //Cartes
     { path: `/${route_principale}/cartes`, name: 'Cartes', element: Cartes },
 
-    //Criters
+    //Criteres
     { path: `/${route_principale}/criteres`, name: 'Criteres', element: Criteres },
+
+        //Affectations
+        { path: `/${route_principale}/affectations`, name: 'Affectations', element: Affectations },
     
     //Statistiques
     { path: `/${route_principale}/statistiques`, name: 'Statistiques', element: Statistiques },
@@ -89,6 +97,7 @@ const routes = [
     { path: `/${route_principale}/details/acteursadmin`, name: 'Admin Details', element: detailsadmin },
     { path: `/${route_principale}/details/cibles`, name: 'Cibles Details', element: DetailsCibles },
     { path: `/${route_principale}/details/dons`, name: 'Dons Details', element: DetailsDons },
+    { path: `/${route_principale}/details/acteurssa`, name: 'Super-admin Details', element: DetailsSA},
 
      //Statistiques
      { path: `/${route_principale}/compte`, name: 'Compte', element: Compte },

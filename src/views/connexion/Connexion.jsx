@@ -52,7 +52,7 @@ const Connexion = (props,navigate) => {
               .then(function (response) {
                 console.log(response.data?.access);
                 localStorage.setItem(userItem,response.data?.access)
-                localStorage.setItem(userEmail,dataN.email)
+              
                 navigation('/dashboard',{replace:true})
               
               })

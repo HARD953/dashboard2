@@ -1,7 +1,8 @@
 
 import React, { useState,useEffect } from 'react';
-import { Chart } from 'primereact/chart';
 import axiosIntance from '../../../api/axiosInstance'
+import { Chart } from 'primereact/chart';
+
 
 const DoughnutChartM = (props) => {
 
@@ -9,7 +10,7 @@ const DoughnutChartM = (props) => {
     const [chartData,setChartData] = useState({
         datasets: [
             {
-                data: [props.data.menage.physique>0 ?props.data.menage.physique : 0 , props.data.menage.condition >0 ?props.data.menage.condition : 0, props.data.menage.occupation>0 ?props.data.occupation.occupation : 0,props.data.menage.etude>0 ?props.data.menage.etude : 0],
+                data: [props.data.menage.physique>0 ?props.data.menage.physique : 0 , props.data.menage.condition >0 ?props.data.menage.condition : 0, props.data.menage.occupation>0 ?props.data.menage.occupation : 0,props.data.menage.etude>0 ?props.data.menage.etude : 0],
                 backgroundColor: [
                     "#FF6384",
                     "#36A2EB",

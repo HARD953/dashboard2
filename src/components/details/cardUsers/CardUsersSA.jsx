@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 import {
   CCol,
   CRow,
@@ -13,31 +13,27 @@ import {cilPeople} from '@coreui/icons'
 
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import axiosIntance from '../../../api/axiosInstance'
+
 import './CardUsers.css'
 import { InputSwitch } from 'primereact/inputswitch';
 
 
 
 const UserCardInfos=(props)=>{
+    
+    const [checked1, setChecked1] = useState(props?.infoAdmin.infoAdmin?.superadmin?.[0].is_active);
 
-     //Agent info
-
-
-
-    const [checked1, setChecked1] = useState(props?.infoAgent.infoAgent.data?.agent?.[0].is_active);
-
-    const [checked2, setChecked2] = useState(props?.infoAgent.infoAgent.data?.agent?.[0].is_superuser);
+    const [checked2, setChecked2] = useState(props?.infoAdmin.infoAdmin?.superadmin?.[0].is_superuser);
 
 
-    const AgentCheck1 = (val)=>
+    const AdminCheck1 = (val)=>
         {
             setChecked1(val)
             console.log(val)
         }
      
 
-    const AgentCheck2 = (val)=>
+    const AdminCheck2 = (val)=>
         {
          
             setChecked2(val)
@@ -54,7 +50,7 @@ const UserCardInfos=(props)=>{
             </CCol>
             <CCol xs={12}  md={6} className="userCardInfos-info-container" >
                 <p className="userCardInfos-info" >
-                {props?.infoAgent.infoAgent.data?.agent?.[0].user_name}
+                {props?.infoAdmin.infoAdmin?.superadmin?.[0].user_name}
                 </p>
             </CCol>
             <CCol xs={12} md={6} >
@@ -64,7 +60,7 @@ const UserCardInfos=(props)=>{
             </CCol>
             <CCol xs={12}  md={6} className="userCardInfos-info-container" >
                 <p className="userCardInfos-info" >
-                {props?.infoAgent.infoAgent.data?.agent?.[0].first_name}
+                {props?.infoAdmin.infoAdmin?.superadmin?.[0].first_name}
                 </p>
             </CCol>
             <CCol xs={12} md={6} >
@@ -74,7 +70,7 @@ const UserCardInfos=(props)=>{
             </CCol>
             <CCol xs={12}  md={6} className="userCardInfos-info-container" >
                 <p className="userCardInfos-info" >
-                {props?.infoAgent.infoAgent.data?.agent?.[0].email}
+                {props?.infoAdmin.infoAdmin?.superadmin?.[0].email}
                 </p>
             </CCol>
             <CCol xs={12} md={6} >
@@ -84,7 +80,7 @@ const UserCardInfos=(props)=>{
             </CCol>
             <CCol xs={12}  md={6} className="userCardInfos-info-container" >
                 <p className="userCardInfos-info" >
-                {props?.infoAgent.infoAgent.data?.agent?.[0].commune}
+                {props?.infoAdmin.infoAdmin?.superadmin?.[0].commune}
                 </p>
             </CCol>
             <CCol xs={12} md={6} >
@@ -94,7 +90,7 @@ const UserCardInfos=(props)=>{
             </CCol>
             <CCol xs={12}  md={6} className="userCardInfos-info-container" >
                 <p className="userCardInfos-info" >
-                {props?.infoAgent.infoAgent.data?.agent?.[0].adresse}
+                {props?.infoAdmin.infoAdmin?.superadmin?.[0].adresse}
                 </p>
             </CCol>
             <CCol xs={12} md={6} >
@@ -105,7 +101,7 @@ const UserCardInfos=(props)=>{
             <CCol xs={12}  md={6} className="userCardInfos-info-container" >
                 <p className="userCardInfos-info" >
               
-                <InputSwitch checked={checked1} onChange={(e) => AgentCheck1(e.value)} />
+                <InputSwitch checked={checked1} onChange={(e) => AdminCheck1(e.value)} />
                 </p>
             </CCol>
             <CCol xs={12} md={6} >
@@ -116,7 +112,7 @@ const UserCardInfos=(props)=>{
             <CCol xs={12}  md={6} className="userCardInfos-info-container" >
                 <p className="userCardInfos-info" >
              
-                <InputSwitch checked={checked2} onChange={(e) => AgentCheck2(e.value)} />
+                <InputSwitch checked={checked2} onChange={(e) => AdminCheck2(e.value)} />
                 </p>
             </CCol>
         </CRow>
@@ -125,7 +121,7 @@ const UserCardInfos=(props)=>{
 
 
 
-const CardUsersAgent = (props) => {
+const CardUsersSA = (props) => {
 
  
 
@@ -134,7 +130,7 @@ const CardUsersAgent = (props) => {
         <h5 style={{fontWeight:'bold'}} >Informations sur Acteur</h5>
         <div className="card-user p-3">
             <CRow>
-                <UserCardInfos infoAgent= {props}/>
+                <UserCardInfos infoAdmin= {props}/>
             </CRow>
             <CRow>
                
@@ -146,4 +142,4 @@ const CardUsersAgent = (props) => {
   )
 }
 
-export default CardUsersAgent
+export default CardUsersSA

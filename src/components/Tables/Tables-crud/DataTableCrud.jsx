@@ -9,15 +9,17 @@ import { Column } from 'primereact/column';
 import { ProductService } from '../../../views/dons/service/ProductService';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-import { FileUpload } from 'primereact/fileupload';
-import { Rating } from 'primereact/rating';
-import { Toolbar } from 'primereact/toolbar';
+import axios from 'axios'; 
 import { InputTextarea } from 'primereact/inputtextarea';
 import { RadioButton } from 'primereact/radiobutton';
 import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import './DataTableCrud.css';
+
+const userItem = 'tokendashlanfi';
+const tokenUser = localStorage.getItem(userItem)
+
 
 
 const DataTableCrud = (props) => {
@@ -46,6 +48,7 @@ const DataTableCrud = (props) => {
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
+    const [valu,setValu]=useState([])
     const productService = new ProductService();
 
 
@@ -111,10 +114,11 @@ const onCityChangeSuperU = (e) => {
     }, []); 
 
 
-    const voirDetailsActeurs=()=>{
+    const voirDetailsActeurs=(rowData)=>{
         navigate(props.detailUrl,{
             state:{
-                idActeur:55,
+                infoAdmin:valu,
+                emailActeur:rowData.email,
                 typeActeur:props.acteursTitle
         }})
     }
@@ -141,8 +145,10 @@ const onCityChangeSuperU = (e) => {
     const hideDeleteProductsDialog = () => {
         setDeleteProductsDialog(false);
     }
-
+    const [re,setRe]=useState('');
+    
     const saveProduct = () => {
+
         setSubmitted(true);
 
         if (product.email.trim() && product.first_name.trim()&& product.adresse.trim()&& product.commune.trim()&& product.user_name.trim()&& product.password.trim()) {
@@ -152,21 +158,48 @@ const onCityChangeSuperU = (e) => {
                 const index = findIndexById(product.id);
 
                 _products[index] = _product;
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+
+                setProducts(_products);
+
+                var data = _product;
+           
+    
+                var config = {
+                  method: 'put',
+                  url: 'https://apivulnerable.herokuapp.com/superadminc/'+product.id+'/',
+                  headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer '+tokenUser
+                  },
+                  data : data
+                };
+                
+                axios(config)
+                .then(function (response) {
+                  console.log(JSON.stringify(response));
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+    
+
+                toast.current.show({ severity: 'success', summary: 'Succès', detail: 'Super-Admin. mis à jour', life: 3000 });
             }
             else {
-                _product.id = createId();
-                _product.image = 'product-placeholder.svg';
+               // _product.id = createId();
+                //_product.image = 'product-placeholder.svg';
                 _products.push(_product);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+                toast.current.show({ severity: 'success', summary: 'Succès', detail: 'Administrateur Créé', life: 3000 });
             }
 
-            setProducts(_products);
+         
+
             setProductDialog(false);
             setProduct(emptyProduct);
         }
+  
         
-
+       
     }
 
     const editProduct = (product) => {
@@ -292,6 +325,8 @@ const onCityChangeSuperU = (e) => {
         )
     }
 
+    
+
  
 
     const imageBodyTemplate = (rowData) => {
@@ -359,9 +394,14 @@ const onCityChangeSuperU = (e) => {
   
 
     const actionBodyTemplate = (rowData) => {
+
+        
+
         return (
             <React.Fragment>
-                <Button icon="pi pi-eye" className="p-button-rounded p-button-outlined " onClick={() => voirDetailsActeurs()} />
+                <Button icon="pi pi-eye" className="p-button-rounded p-button-outlined " onClick={() => voirDetailsActeurs(rowData)} />
+                <Button icon="pi pi-pencil" className="p-button-rounded p-button-outlined mr-2" onClick={() => editProduct(rowData)} />
+    
             </React.Fragment>
         );
     }
@@ -384,7 +424,7 @@ const onCityChangeSuperU = (e) => {
     const productDialogFooter = (
         <React.Fragment>
             <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveProduct} />
+            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={()=>saveProduct()} />
         </React.Fragment>
     );
     const deleteProductDialogFooter = (
@@ -430,7 +470,7 @@ const onCityChangeSuperU = (e) => {
                 </DataTable>
             </div>
 
-            <Dialog visible={productDialog} style={{ width: '450px' }} header="Ajout" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+            <Dialog visible={productDialog} style={{ width: '450px' }} header="Admin Détails" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                 {product.image && <img src={`images/product/${product.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={product.image} className="product-image block m-auto pb-3" />}
                 <div className="field">
                     <label htmlFor="email">E-mail</label>

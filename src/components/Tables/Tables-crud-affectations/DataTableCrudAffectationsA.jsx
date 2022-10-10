@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Checkbox } from 'primereact/checkbox';
 
 import axios from 'axios';  
 import { classNames } from 'primereact/utils';
@@ -16,6 +15,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import './DataTableCrud.css';
+
 import { Dropdown } from 'primereact/dropdown';
 
 
@@ -23,25 +23,14 @@ const userItem = 'tokendashlanfi';
 const tokenUser = localStorage.getItem(userItem)
 
 
-const DataTableCrudAgent = (props) => {
+const DataTableCrudAffectationsA = (props) => {
     const navigate = useNavigate()
 
     let emptyProduct = 
     {
-                "email": "",
-                "user_name": "",
-                "commune": "",
-                "first_name": "",
-                "adresse": "",
-                "about_me": "",
-                "is_agent": "is_agent",
-                "is_active": "",
-                "is_staff": "",
-                "password":"",
-                "district":"",
-                "region":"",
-                "departement":"",
-                "sous_prefecture":""
+                "agent": "",
+                "quartier": "",
+                "status":false
             };
 
     const [products, setProducts] = useState(null);
@@ -61,41 +50,116 @@ const DataTableCrudAgent = (props) => {
     myHeaders.append("Content-Type", "application/json");
  
 
-    const [cities, setCities] = useState([]);
+    const [activeIndex1, setActiveIndex1] = useState(0);
 
-const onCityChangeStaff = (e) => {
-    let selectedCities = [...cities];
-    let _product = {...product};
-    if(e.checked){
-        selectedCities.push(e.value);
-  
-     
-        _product[`${'is_staff'}`] = e.value;
+    const [selectedAgent, setselectedAgent] = useState(null);
+    const [selectedQuartier, setSelectedQuartier] = useState(null);
 
-        setProduct(_product);
-    }
+    const [agents, setAgents] = useState([]);
+    const [quatiers, setQuartiers] = useState([]);
+
+    var k = 0
+    var j=0
+    var js=""
+    var tab=[]
+
+    // Agents Liste Dropdown
+
+    useEffect(() => {
         
-    else
-        selectedCities.splice(selectedCities.indexOf(e.value), 1);
+        productService.getAgents().then(data => {
 
-    setCities(selectedCities);
-}
+            if(k==0)
+            {
 
-const onCityChangeActive = (e) => {
-    let selectedCities = [...cities];
-    let _product = {...product};
-    if(e.checked){
-        selectedCities.push(e.value);
+            for(let i=0;i< data.length;i++ )
+            {
+
+                js={ name: data[i].first_name  ,  code: data[i].first_name }
+                
+                tab.push(js)
+                
+            }
+          
+
+            setAgents(tab)
+            
+            tab=[]
+            js=""
+
+     
+            
+            k=k+1
+        }
+        } );
+
+    }, []); 
+
+
+    // Zones Liste Dropdown
+
+    useEffect(() => {
+        
+        productService.getAllZones().then(data => {
+
+            if(j==0)
+            {
+               
+            for(let i=0;i< data.length;i++ )
+            {
+
+                js={ name: data[i].nomz  ,  code: data[i].nomz }
+                
+                tab.push(js)
+                
+            }
+          
+
+            setQuartiers(tab)
+
+            
+            tab=[]
+            js=""
+
+           
+            
+            j=j+1
+        }
+        } );
+
+    }, []); 
     
-        _product[`${'is_active'}`] = e.value;
+    
+
+     
+    const onCityChangeAgent = (e,name) => {
+        
+     
+        setselectedAgent(e.value);
+
+        const val = e.value.code || '';
+        let _product = {...product};
+        _product[`${name}`] = val;
 
         setProduct(_product);
+     
     }
-    else
-        selectedCities.splice(selectedCities.indexOf(e.value), 1);
+       
+    const onCityChangeQuartier = (e,name) => {
+       
+        setSelectedQuartier(e.value);
 
-    setCities(selectedCities);
-}
+        const val = e.value.code || '';
+        let _product = {...product};
+        _product[`${name}`] = val;
+
+        setProduct(_product);
+
+ 
+    }
+       
+
+
 
 
 
@@ -103,70 +167,9 @@ const onCityChangeActive = (e) => {
 
     useEffect(() => {
         
-        productService.getAgents().then(data =>  setProducts(data));
+        productService.getAllAffectations().then(data =>  setProducts(data));
 
     }, []); 
-
-      // Communes Liste Dropdown
-
-      const [communes, setCommunes] = useState([]);
-
-      const [selectedcommune, setselectedcommune] = useState(null);
- 
-
-     
-      var j=0
-      var js=""
-      var tab=[]
-
-      
-
-      useEffect(() => {
-       
-       productService.getAllCommunes().then(data => {
-
-           
-           if(j==0)
-           {
-              
-           for(let i=0;i< data.length;i++ )
-           {
-
-               js={ name: data[i].COMMUNE ,  code: data[i].COMMUNE }
-               
-               tab.push(js)
-               
-           }
-         
-
-           setCommunes(tab)
-
-           
-           tab=[]
-           js=""
-
-          
-           
-           j=j+1
-       }
-       });
-
-       }, []); 
-
-
-       const onCityChangecommune = (e,name) => {
-       
-    
-           setselectedcommune(e.value);
-   
-           const val = e.value.code || '';
-           let _product = {...product};
-           _product[`${name}`] = val;
-   
-           setProduct(_product);
-        
-       }
-       // Communes Liste Dropdown
 
 
     const voirDetailsActeurs=(rowData)=>{
@@ -177,7 +180,7 @@ const onCityChangeActive = (e) => {
         navigate(props.detailUrl,{
             state:{
                 infoAgent:valu,
-                emailAgent:rowData.email,
+                agentAgent:rowData.agent,
                 typeActeur:props.acteursTitle
         }})
     }
@@ -205,7 +208,7 @@ const onCityChangeActive = (e) => {
     const saveProduct = () => {
         setSubmitted(true);
 
-        if (product.email.trim() && product.first_name.trim()&& product.adresse.trim()&& product.commune.trim()&& product.user_name.trim()&& product.password.trim()) {
+        if (product.agent.trim() && product.quartier.trim()) {
             let _products = [...products];
             let _product = {...product};
             if (product.id) {
@@ -218,7 +221,7 @@ const onCityChangeActive = (e) => {
                // _product.id = createId();
                 //_product.image = 'product-placeholder.svg';
                 _products.push(_product);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Agent Créé', life: 3000 });
+                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Affectation réussie', life: 3000 });
             }
 
             setProducts(_products);
@@ -228,7 +231,7 @@ const onCityChangeActive = (e) => {
            
            var config = {
              method: 'post',
-             url: 'https://apivulnerable.herokuapp.com/agent/',
+             url: 'https://apivulnerable.herokuapp.com/affecter/',
              headers: { 
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+tokenUser
@@ -316,7 +319,7 @@ const onCityChangeActive = (e) => {
 
                     <Button onClick={openNew} className="px-3 p-button-sm p-button-rounded me-5" aria-label="Plus">
                         <i className="pi pi-plus px-2"></i>
-                        <span className="px-5">Ajouter</span>
+                        <span className="px-5">Affecter</span>
                     </Button>
                     <Button className="px-3 p-button-sm p-button-danger p-button-rounded" aria-label="Plus" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length}>
                         <i className="pi pi-trash px-2"></i>
@@ -345,26 +348,36 @@ const onCityChangeActive = (e) => {
 
 
 
-    const emailBodyTemplate = (rowData) => {
-        return (rowData.email);
+    const agentBodyTemplate = (rowData) => {
+        return (rowData.agent);
     }
-    const user_nameBodyTemplate = (rowData) => {
-        return rowData.user_name;
-    }
-
     const communeBodyTemplate = (rowData) => {
         return rowData.commune;
     }
-    const first_nameTemplate = (rowData) => {
-        return rowData.first_name
+
+  
+    const quartierTemplate = (rowData) => {
+        return rowData.quartier
   
     }
-    const passwordTemplate = (rowData) => {
-        return rowData.password;
+    const q2Template = (rowData) => {
+        return rowData.q2;
   
     }
-    const adresseTemplate = (rowData) => {
-        return rowData.adresse;
+    const q3Template = (rowData) => {
+        return rowData.q3;
+  
+    }
+    const q4Template = (rowData) => {
+        return rowData.q4
+  
+    }
+    const q5Template = (rowData) => {
+        return rowData.q5;
+  
+    }
+    const q6Template = (rowData) => {
+        return rowData.q6;
   
     }
     const about_meTemplate = (rowData) => {
@@ -407,7 +420,6 @@ const onCityChangeActive = (e) => {
 
     const actionBodyTemplate = (rowData) => {
 
-   
         return (
             <React.Fragment>
                 <Button icon="pi pi-eye" className="p-button-rounded p-button-outlined " onClick={() => voirDetailsActeurs(rowData)} />
@@ -450,96 +462,29 @@ const onCityChangeActive = (e) => {
                     currentPageReportTemplate="Afficher de {first} à {last} de {totalRecords} Acteurs"
                     globalFilter={globalFilter} header={header} responsiveLayout="scroll">
                     <Column selectionMode="multiple" headerStyle={{ width: '2rem' }} exportable={false}></Column>
-                    <Column sortable field="email" header="Email" body={emailBodyTemplate}   style={{ minWidth: '5rem' }}></Column>
-                    <Column sortable field="user_name" header="Nom d'utilisateur" body={user_nameBodyTemplate}   style={{ minWidth: '16rem' }}></Column>
-                    <Column sortable field="commune" header="Commune" body={communeBodyTemplate}  style={{ minWidth: '16rem' }}></Column>
-                    <Column sortable field="first_name" header="Nom" body={first_nameTemplate}  style={{ minWidth: '15rem' }}></Column>
-                    <Column sortable field="adresse" header="Adresse" body={adresseTemplate}  style={{ minWidth: '15rem' }}></Column>
-                
-                    <Column sortable field="password" header="Mot de Passe" body={passwordTemplate}  style={{ minWidth: '10rem' }}></Column>
-                    <Column sortable field="about_me" header="À propos de moi" body={about_meTemplate}  style={{ minWidth: '15rem' }}></Column>
-                    <Column sortable field="is_active" header="Actif " body={is_activeTemplate}  style={{ minWidth: '10rem' }}></Column>
-                    <Column sortable field="is_staff" header="Personnel " body={is_staff}  style={{ minWidth: '15rem' }}></Column>
-                    <Column sortable field="is_agent" header="Agent" body={is_agentTemplate}  style={{ minWidth: '10rem' }}></Column>
-                    
+                    <Column sortable field="agent" header="Agent" body={agentBodyTemplate}   style={{ minWidth: '5rem' }}></Column>
+                    <Column sortable field="quartier" header="Quartier" body={quartierTemplate}  style={{ minWidth: '15rem' }}></Column>
+                  
                     <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '1rem' }}></Column>
                 </DataTable>
             </div>
 
-            <Dialog visible={productDialog} style={{ width: '450px' }} header="Ajout" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+            <Dialog visible={productDialog} style={{ width: '450px' }} header="Affectation" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                 {product.image && <img src={`images/product/${product.image}`} onError={(e) => e.target.src='https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png'} alt={product.image} className="product-image block m-auto pb-3" />}
                 <div className="field">
-                    <label htmlFor="email">E-mail</label>
-                    <InputText id="email" value={product.email} onChange={(e) => onInputChange(e, 'email')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.email })} />
-                    {submitted && !product.email && <small className="p-error">E-mail is required.</small>}
+                    <label htmlFor="agent">Agent</label>
+                    <Dropdown id="agent"  value={selectedAgent} options={agents} onChange={(e) => onCityChangeAgent(e, 'agent')} optionLabel="name" placeholder="Agent" className={classNames({ 'p-invalid': submitted && !product.agent })} />
+                  {submitted && !product.agent && <small className="p-error">Agent is required.</small>}
                 </div>
 
+   
                 <div className="field">
-                    <label htmlFor="user_name">Nom d'utilisateur</label>
-                    <InputText id="user_name" value={product.user_name} onChange={(e) => onInputChange(e, 'user_name')} required  className={classNames({ 'p-invalid': submitted && !product.user_name })} />
-                    {submitted && !product.user_name && <small className="p-error">Nom utilisateur is required.</small>}
+                    <label htmlFor="quartier">Quartier</label>
+                    {submitted && !product.quartier && <small className="p-error">Quartier is required.</small>}
+                    <Dropdown id="quartier"  value={selectedQuartier} options={quatiers} onChange={(e) => onCityChangeQuartier(e, 'quartier')} optionLabel="name" placeholder="Quartier" className={classNames({ 'p-invalid': submitted && !product.quartier })} />
+                  
                 </div>
-                <div className="field">
-                    <label htmlFor="first_name">Nom</label>
-                    <InputText id="first_name" value={product.first_name} onChange={(e) => onInputChange(e, 'first_name')} required  className={classNames({ 'p-invalid': submitted && !product.first_name })} />
-                    {submitted && !product.first_name && <small className="p-error">Nom is required.</small>}
-                </div>
-                <div className="field">
-                    <label htmlFor="password">Mot de passe</label>
-                    <InputText id="password" value={product.password} onChange={(e) => onInputChange(e, 'password')} required  className={classNames({ 'p-invalid': submitted && !product.password })} />
-                    {submitted && !product.password && <small className="p-error">Mot de passe is required.</small>}
-                </div>
-            
-                <div className="field">
-                    <label htmlFor="commune">Commune</label>
-                    <Dropdown id="commune"  value={selectedcommune} options={communes} onChange={(e) => onCityChangecommune(e, 'commune')} optionLabel="name" placeholder="commune" className={classNames({ 'p-invalid': submitted && !product.commune })} />
-                  {submitted && !product.commune && <small className="p-error">commune is required.</small>}
-                </div>
-           
-                <div className="field">
-                    <label htmlFor="district">District</label>
-                    <InputText id="district" value={product.district} onChange={(e) => onInputChange(e, 'district')} required className={classNames({ 'p-invalid': submitted && !product.district})} />
-                    {submitted && !product.district && <small className="p-error">Adresse is required.</small>}
-                </div>
-                <div className="field">
-                    <label htmlFor="region">Region</label>
-                    <InputText id="region" value={product.region} onChange={(e) => onInputChange(e, 'region')} required className={classNames({ 'p-invalid': submitted && !product.region })} />
-                    {submitted && !product.region && <small className="p-error">Adresse is required.</small>}
-                </div>
-                <div className="field">
-                    <label htmlFor="departement">Departement</label>
-                    <InputText id="departement" value={product.departement} onChange={(e) => onInputChange(e, 'departement')} required className={classNames({ 'p-invalid': submitted && !product.departement })} />
-                    {submitted && !product.departement && <small className="p-error">Adresse is required.</small>}
-                </div>
-                <div className="field">
-                    <label htmlFor="sous_prefecture">Sous Prefecture</label>
-                    <InputText id="sous_prefecture" value={product.sous_prefecture} onChange={(e) => onInputChange(e, 'sous_prefecture')} required className={classNames({ 'p-invalid': submitted && !product.sous_prefecture})} />
-                    {submitted && !product.sous_prefecture && <small className="p-error">Adresse is required.</small>}
-                </div>
-                <div className="field">
-                    <label htmlFor="adresse">Adresse</label>
-                    <InputText id="adresse" value={product.adresse} onChange={(e) => onInputChange(e, 'adresse')} required className={classNames({ 'p-invalid': submitted && !product.adresse })} />
-                    {submitted && !product.adresse && <small className="p-error">Adresse is required.</small>}
-                </div>
-             
-                
-
-                <div className="field">
-                    <label htmlFor="about_me">A propos de moi</label>
-                    <InputTextarea id="about_me" value={product.about_me} onChange={(e) => onInputChange(e, 'about_me')} required rows={3} cols={20} />
-                </div>
-                <div className="field-checkbox">
-                    <div className="field-checkbox">
-                        <Checkbox inputId="is_active" name="is_active" value="is_active" onChange={onCityChangeActive} checked={cities.indexOf('is_active') !== -1} />
-                        <label htmlFor="is_active">Actif</label>
-                    </div>
-                    <div className="field-checkbox">
-                        <Checkbox inputId="is_staff" name="is_staff" value="is_staff" onChange={onCityChangeStaff} checked={cities.indexOf('is_staff') !== -1} />
-                        <label htmlFor="is_staff">Personnel</label>
-                    </div>
-         
-                </div>
-
+    
               
             </Dialog>
 
@@ -560,4 +505,4 @@ const onCityChangeActive = (e) => {
     );
 }
 
-export default DataTableCrudAgent
+export default DataTableCrudAffectationsA

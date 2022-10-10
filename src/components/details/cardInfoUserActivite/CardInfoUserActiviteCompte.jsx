@@ -7,12 +7,8 @@ import {
 
 } from '@coreui/react'
 
-import { ProductService } from '../../../views/dons/service/ProductService';
-
+import axiosInstance from '../../../api/axiosInstance'
 import './CardInfoUserActivite.css'
-
-
-const productService = new ProductService();
 
 const UserCardActivite=(props)=>{
     return(
@@ -32,23 +28,32 @@ const UserCardActivite=(props)=>{
 }
 
 
-const CardInfoUserActivite = (props) => {
+const CardInfoUserActiviteCompte = (props) => {
 
     const [valu,setValu]=useState([])
 
-    useEffect(() => {
+
 
   
-        productService.getAdminDetails(props.infoAdmin).then(data => setValu(data));
+    useEffect(()=>{
+      axiosInstance.get('detailadimn/')
+      .then((res)=>{
+        setValu(res.data.data[0])
+        
+  
        
-    }, []); 
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+    },[])
 
     function up()
     {
-        if(typeof valu?.admin != 'undifined'){
+        if(typeof valu != 'undifined'){
 
             
-            return valu?.admin?.[0].updated_at
+            return valu?.updated_at
 
             
            
@@ -56,10 +61,10 @@ const CardInfoUserActivite = (props) => {
     }
     function last()
     {
-        if(typeof valu?.admin != 'undifined'){
+        if(typeof valu != 'undifined'){
 
 
-            return valu?.admin?.[0].last_login
+            return valu?.last_login
 
             
            
@@ -67,10 +72,10 @@ const CardInfoUserActivite = (props) => {
     }
     function create()
     {
-        if(typeof valu?.admin != 'undifined'){
+        if(typeof valu != 'undifined'){
 
 
-            return valu?.admin?.[0].create
+            return valu?.create
 
             
            
@@ -83,11 +88,7 @@ const CardInfoUserActivite = (props) => {
       
         <h5 style={{fontWeight:'bold'}} >Informations sur ses Activités</h5>
         <div className="card-user p-3">
-        <CRow>
-            <UserCardActivite titre="Agent(s) créé(s)" info={valu?.agentcree} />
- 
-
-            </CRow>
+       
       
             <CRow>
                 <UserCardActivite titre="Etat de connexion" info="En ligne" />
@@ -109,4 +110,4 @@ const CardInfoUserActivite = (props) => {
   )
 }
 
-export default CardInfoUserActivite
+export default CardInfoUserActiviteCompte

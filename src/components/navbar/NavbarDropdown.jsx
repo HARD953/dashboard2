@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   CAvatar,
   CBadge,
@@ -18,12 +18,39 @@ import {
 import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/im8.jpg'
+import { useNavigate } from 'react-router-dom';
+import axiosIntance from '../../api/axiosInstance';
 
 const NavbarDropdown = () => {
+
+  const userItem = 'tokendashlanfi';
+ 
+
+  const navigation = useNavigate()
+
+  function deconnexion (){
+   
+      axiosIntance.post('logout/blacklist/')
+      .then((res)=>{
+         
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+
+      localStorage.removeItem(userItem);
+  
+     navigation('/',{replace:true})
+     window.location.reload(false);
+  }
+
+  var profile = window.localStorage.getItem('profile');
+
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar src={avatar8} size="md" />
+        <CAvatar src={profile} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Mon profil</CDropdownHeader>
@@ -38,7 +65,7 @@ const NavbarDropdown = () => {
         </CDropdownItem>
        
         <CDropdownDivider />
-        <CDropdownItem href="#">
+        <CDropdownItem onClick={deconnexion}>
           <CIcon icon={cilLockLocked} className="me-2" />
           Deconnexion
         </CDropdownItem>

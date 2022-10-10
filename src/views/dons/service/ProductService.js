@@ -95,6 +95,60 @@ export class ProductService {
           .then(result => (result))
           .catch(error => console.log('error', error));
     }
+    getSADetails(emailAdmin) {
+
+  
+
+        var requestOptions = {
+            method: 'GET',
+            headers: tokenUser ? {'Authorization': 'Bearer '+tokenUser}:{},
+      
+            redirect: 'follow'
+          };
+
+        return  fetch("https://apivulnerable.herokuapp.com/infosuper/"+emailAdmin+"/", requestOptions)
+          .then(response => response.json())
+          .then(result => (result.chefs))
+          .catch(error => console.log('error', error));
+    }
+    getAllZones() {
+        return axiosIntance.get('zone/').then((res)=>res.data.data);
+    }
+    getAllAffectations() {
+        return axiosIntance.get('affecter/').then((res)=>res.data.data)
+    }
+    getDeconnexion() {
+        return axiosIntance.get('logout/blacklist/').then((res)=>res.data.data)
+    }
+
+    getAllCommunes() { 
+        
+        var requestOptions = {
+        method: 'GET',
+        headers: tokenUser ? {'Authorization': 'Bearer '+tokenUser}:{},
+  
+        redirect: 'follow'
+      };
+
+    return  fetch("https://data.gouv.ci/data-fair/api/v1/datasets/liste-des-circonscriptions-administratives-et-des-communes/lines?size=252&select=COMMUNE", requestOptions)
+      .then(response => response.json())
+      .then(results => (results.results))
+      .catch(error => console.log('error', error));
+     }
+
+      getAllCriteresChef() { 
+        
+        var requestOptions = {
+        method: 'GET',
+      
+        redirect: 'follow'
+      };
+
+    return  fetch("http://apivulnerable.herokuapp.com/criterechef/", requestOptions)
+      .then(response => response.json())
+      .then(results => (results))
+      .catch(error => console.log('error', error)); }
+  
 
   
 

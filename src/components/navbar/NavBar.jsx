@@ -7,15 +7,13 @@ import {
   CHeaderBrand,
   CHeaderNav,
   CHeaderToggler,
-  CNavLink,
-  CNavItem,
+ 
   CImage,
 
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilMenu } from '@coreui/icons'
-import { InputText } from 'primereact/inputtext';
-import { Badge } from 'primereact/badge';
+
 
 import NavbarDropdown from './NavbarDropdown'
 import logo from '../../assets/images/logo.png'
